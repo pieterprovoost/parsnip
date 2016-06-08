@@ -10,42 +10,45 @@ parsedms <- function(input) {
   pattern <- "(-?\\d+(?:\\.\\d+)?)\\s*[°o]\\s*(?:(\\d+(?:\\.\\d+)?)\\s*[´`'ʹʻʼ′’]\\s*(?:(\\d+(?:\\.\\d+)?)\\s*(?:″|ʺ|\"|”|´´|``|''|ʹʹ|ʻʻ|ʼʼ|′′|’’)?)?)?\\s*([NSEW])?"
   matches <- str_match_all(input, regex(pattern, ignore_case = TRUE))
 
-  for (m in 1:length(matches)) {
+  if (length(matches) > 0) {
+    for (m in 1:length(matches)) {
 
-    coord <- list(lon = NA, lat = NA)
-    match <- matches[[m]]
+      coord <- list(lon = NA, lat = NA)
+      match <- matches[[m]]
 
-    for (n in 1:nrow(match)) {
+      if (nrow(match) > 0) {
+        for (n in 1:nrow(match)) {
 
-      d <- as.numeric(match[n, 2])
-      m <- as.numeric(match[n, 3])
-      s <- as.numeric(match[n, 4])
-      h <- match[n, 5]
+          d <- as.numeric(match[n, 2])
+          m <- as.numeric(match[n, 3])
+          s <- as.numeric(match[n, 4])
+          h <- match[n, 5]
 
-      if (!is.na(d)) {
-        dd <- abs(d)
-        if (!is.na(m)) {
-          dd <- dd + m / 60
-          if (!is.na(s)) {
-            dd <- dd + s / 3600
+          if (!is.na(d)) {
+            dd <- abs(d)
+            if (!is.na(m)) {
+              dd <- dd + m / 60
+              if (!is.na(s)) {
+                dd <- dd + s / 3600
+              }
+            }
+            dd <- sign(d) * dd
+            if (tolower(h) == "n") {
+              coord$lat <- dd
+            } else if (tolower(h) == "s") {
+              coord$lat <- -dd
+            } else if (tolower(h) == "e") {
+              coord$lon <- dd
+            } else if (tolower(h) == "w") {
+              coord$lon <- -dd
+            }
           }
-        }
-        dd <- sign(d) * dd
-        if (tolower(h) == "n") {
-          coord$lat <- dd
-        } else if (tolower(h) == "s") {
-          coord$lat <- -dd
-        } else if (tolower(h) == "e") {
-          coord$lon <- dd
-        } else if (tolower(h) == "w") {
-          coord$lon <- -dd
         }
       }
 
+      result <- rbind(result, coord)
+
     }
-
-    result <- rbind(result, coord)
-
   }
 
   return(result)

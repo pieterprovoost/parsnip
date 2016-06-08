@@ -1,6 +1,6 @@
 Package: parsnip
 Title: Parsing geographical coordinate strings
-Version: 0.1.0
+Version: 0.1.1
 Author: Pieter Provoost
 Maintainer: Pieter Provoost <pieterprovoost@gmail.com>
 Description: Parsing geographical coordinate strings
