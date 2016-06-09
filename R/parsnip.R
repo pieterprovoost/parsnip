@@ -3,6 +3,6 @@
 #' Work in progress
 #'
 #' @docType package
-#' @name parnsip
+#' @name parsnip
 #' @import stringr
 NULL
