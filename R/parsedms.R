@@ -32,7 +32,7 @@ parsedms <- function(input) {
                 dd <- dd + s / 3600
               }
             }
-            dd <- sign(d) * dd
+            dd <- ifelse(d == 0, 1, sign(d)) * dd
             if (tolower(h) == "n") {
               coord$lat <- dd
             } else if (tolower(h) == "s") {
