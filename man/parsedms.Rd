@@ -15,4 +15,3 @@ decimal longitude and latitude
 \description{
 Parse degrees minutes seconds
 }
-
